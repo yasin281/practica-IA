@@ -1,7 +1,8 @@
 # AIMAexample
-Example of use of AIMA classes to complete in laboratory
+Example of use of AIMA classes to complete in laboratory: [COMPLETED]
 
-#HOW TO COMPILE
+#HOW TO COMPILE AIMA.zip
+```
 1.Extract AIMA.zip
 ```
 # unzip AIMA.zip
