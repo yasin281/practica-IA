@@ -1,7 +1,7 @@
 # AIMAexample
 Example of use of AIMA classes to complete in laboratory: [COMPLETED]
 
-#HOW TO COMPILE AIMA.zip
+#HOW TO COMPILE AIMA.zip (`<br>`)
 1.Extract AIMA.zip
 
 ```
@@ -13,7 +13,7 @@ unzip AIMA.zip
 export CLASSPATH=".:./dist/AIMA.jar"
 ```
 
-3.Compile with 
+3.Compile with javac
 
 ```
 javac Main.java
