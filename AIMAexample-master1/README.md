@@ -3,6 +3,9 @@ Example of use of AIMA classes to complete in laboratory
 
 #HOW TO COMPILE
 1.Extract AIMA.zip
+```
+# unzip AIMA.zip
+```
 2.If working on Linux execute the next command to include the library
 ```
 # export CLASSPATH=".:./dist/AIMA.jar"
