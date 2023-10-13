@@ -1,4 +1,4 @@
-
+package Bicing;
 import IA.Bicing.Estaciones;
 import IA.Bicing.Estacion;
 import java.util.Iterator;

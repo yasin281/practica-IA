@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
-import Bicing;
-
+import IA.Bicing.Estacion;
 public class Estado{
     
     private Estacion estacionInicial;
