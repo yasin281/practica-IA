@@ -7,3 +7,11 @@ La representacion del estado consta de un vector de furgonetas, donde F[0] indic
 vector<vector<Pair<Estacion,nb>>> rutasFurgonetas;
 //Ejemplo
 F[0]=vec3({E0,nb a recoger},{Ed,nb-x},{Ed2,x})
+
+
+
+
+COMPILACION (1):
+export CLASSPATH = ".:./lib/Bicing.jar"
+javac Main.jar
+java Main
