@@ -1,1 +1,10 @@
-#Goal test
+package Bicing;
+
+import aima.search.framework.GoalTest;
+
+public class EstadoSolucion implements GoalTest {
+    @Override
+    public boolean isGoalState(Object o) {
+        return false;
+    }
+}

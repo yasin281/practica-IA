@@ -13,4 +13,5 @@ public class Estado{
     
     private double recorridoTotalKM;
 
+    private double distance;
 }
