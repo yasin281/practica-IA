@@ -12,6 +12,6 @@ F[0]=vec3({E0,nb a recoger},{Ed,nb-x},{Ed2,x})
 
 
 COMPILACION (1):
-export CLASSPATH = ".:./lib/Bicing.jar"
+export CLASSPATH=".:./lib/Bicing.jar:./lib/AIMA.jar"
 javac Main.jar
 java Main
