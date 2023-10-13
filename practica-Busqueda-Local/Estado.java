@@ -5,10 +5,10 @@ import IA.Bicing.Estacion;
 public class Estado{
     
     //matriz de fx6 
-    private int[][] furgos;
+    private double[][] furgos;
     //funcion para inicializar esta matriz
     public void inicializarFurgos(int nfurg, int nest){
-        furgos = new int[nfurg][nest];
+        furgos = new double[nfurg][nest];
         for(int i = 0; i < nfurg; ++i){
             for(int j = 0; j < nest; ++j){
                 furgos[i][j] = 0;
@@ -17,7 +17,7 @@ public class Estado{
     }
     
     //funcion para cada elemento de [][]furgo le asigne 6 enteros
-    public void setFurgos(int furg, int Est0,int Est1,int Est2, int B1, int B2, int Km){
+    public void setFurgos(int furg, int Est0,int Est1,int Est2, int B1, int B2, double Km){
         furgos[furg][0] = Est0;
         furgos[furg][1] = Est1;
         furgos[furg][2] = Est2;

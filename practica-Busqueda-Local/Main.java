@@ -8,7 +8,8 @@ import aima.search.framework.Search;
 import aima.search.framework.SearchAgent;
 import aima.search.informed.HillClimbingSearch;
 import aima.search.framework.GraphSearch;
-
+//import para formulas matematicas
+import static java.lang.Math.abs;
 import java.util.Scanner;
 
 public class Main {
@@ -19,7 +20,7 @@ public class Main {
         int nest = sc.nextInt();
         int nbic = sc.nextInt();
         //nbic tiene que ser como minimo 50*nest, es menor da error
-        if(nest* 50 < nbic) {
+        if(nest* 50 > nbic) {
             System.out.println("Error: el numero de bicicletas es menor que 50*numero de estaciones");
             System.exit(1);
         }
@@ -32,14 +33,22 @@ public class Main {
 
         Estado furgonetas = new Estado();
         furgonetas.inicializarFurgos(nfurg, 6);
-        furgonetas.setFurgos(0, 0, 1, 2, 0, 0, 0);
-        furgonetas.setFurgos(1, 3, 4, 5, 0, 0, 0);
-        furgonetas.setFurgos(2, 6, 7, 8, 0, 0, 0);
-        furgonetas.setFurgos(3, 9, 10, 11, 0, 0, 0);
-        furgonetas.setFurgos(4, 12, 13, 14, 0, 0, 0);
+
+        //solucion facil --> Furgo[0] coje en Estaciones[0] y lo deja en Estaciones[1]
+        int i = 0;
+        for(; i < nest && i < nfurg; ++i){
+            int g = Math.min(estaciones.get(i).getNumBicicletasNoUsadas(),30);
+            //kilometros manhattan entre estacion i y (i+1)%nest
+            double km = Math.abs(estaciones.get(i).getCoordX()-estaciones.get((i+1)%nest).getCoordX())+Math.abs(estaciones.get(i).getCoordY()-estaciones.get((i+1)%nest).getCoordY());
+            furgonetas.setFurgos(i, i, (i+1)%nest, -1, g, 0, km);
+        }   
+        if(i < nfurg){
+            for(; i < nfurg; ++i){
+                furgonetas.setFurgos(i, -1, 0, 0, 0, 0, 0);
+            }
+        }
+
         furgonetas.printFurgos();
-
-
     }
 }
 
