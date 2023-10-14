@@ -4,6 +4,7 @@ import IA.Bicing.Estacion;
 
 public class Estado{
     
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ESTARIA BIEN PONER OTROS DOS ELEMENTOS QUE SEA BENEFICIO Y COSTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //matriz de fx6 
     private double[][] furgos;
     //funcion para inicializar esta matriz
@@ -89,8 +90,61 @@ public class Estado{
         return vale;
     }
 
-    
-    
-    
+    //Getters
+    public double[][] getFurgos(){
+        return furgos;
+    }
+
+    public int getNumFurgonetas(){
+        return furgos.length;
+    }
+
+
+    public int getEstacionInicial(int furg){
+        return (int)furgos[furg][0];
+    }
+
+    public int getEstacionDestino(int furg){
+        return (int)furgos[furg][1];
+    }
+
+    public int getEstacionDestino2(int furg){
+        return (int)furgos[furg][2];
+    }
+
+    public int getBicicletas(int furg){
+        return (int)furgos[furg][3];
+    }
+
+    public int getBicicletas2(int furg){
+        return (int)furgos[furg][4];
+    }
+
+    public double getKilometros(int furg){
+        return furgos[furg][5];
+    }
+
+    public double getKilometrosTotales(){
+        double km = 0;
+        for(int i = 0; i < furgos.length; ++i){
+            km += furgos[i][5];
+        }
+        return km;
+    }
+
+    //Funcion para calcular el beneficio de una solucion
+
+    public double getBeneficio(){
+        double beneficio = 0;
+        for(int i = 0; i < furgos.length; ++i){
+            for(int j = 0; j < furgos[0].length; ++j){
+                if(furgos[i][j] != -1){
+                    beneficio += furgos[i][j];
+                }
+            }
+        }
+        return beneficio;
+    }
+
 }
 

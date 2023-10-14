@@ -8,4 +8,6 @@ public class Heuristica implements HeuristicFunction {
     public double getHeuristicValue(Object o) {
         return 0;
     }
+    
+    
 }
