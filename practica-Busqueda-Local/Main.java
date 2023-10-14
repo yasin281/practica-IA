@@ -83,14 +83,14 @@ public class Main {
         if(halfEst > nfurg){ //en el caso de el numero de furgonetas sea menor que la mitad de las estaciones
             for(int j = 0; j < nfurg; ++j){
                 int g = Math.min(estaciones.get(nest-j-1).getNumBicicletasNoUsadas(),30);
-                int km = Math.abs(estaciones.get((int)beneficio[j][1]).getCoordX()-estaciones.get((int)beneficio[nest-j-1][1]).getCoordX())+Math.abs(estaciones.get((int)beneficio[j][1]).getCoordY()-estaciones.get((int)beneficio[nest-j-1][1]).getCoordY());
+                int km = distanciaManhattan(estaciones.get((int)beneficio[j][1]),estaciones.get((int)beneficio[nest-j-1][1]));
                 furgonetas.setFurgos(j, (int)beneficio[nest-j-1][1],(int)beneficio[j][1], -1, g, 0, km);
             }
         }
         else { 
             for(int j = 0; j < halfEst; ++j){
                 int g = Math.min(estaciones.get(nest-j-1).getNumBicicletasNoUsadas(),30);
-                int km = Math.abs(estaciones.get((int)beneficio[j][1]).getCoordX()-estaciones.get((int)beneficio[nest-j-1][1]).getCoordX())+Math.abs(estaciones.get((int)beneficio[j][1]).getCoordY()-estaciones.get((int)beneficio[nest-j-1][1]).getCoordY());
+                int km = distanciaManhattan(estaciones.get((int)beneficio[j][1]),estaciones.get((int)beneficio[nest-j-1][1]));
                 furgonetas.setFurgos(j, (int)beneficio[nest-j-1][1],(int)beneficio[j][1], -1, g, 0, km);
             }
             //la otra mitad estara asignada a ninguna estacion (no disponible)
