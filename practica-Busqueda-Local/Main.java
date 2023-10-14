@@ -11,6 +11,7 @@ import aima.search.informed.HillClimbingSearch;
 import aima.search.framework.GraphSearch;
 //import para formulas matematicas
 import static java.lang.Math.abs;
+
 import java.util.Scanner;
 
 public class Main {
@@ -83,14 +84,14 @@ public class Main {
         if(halfEst > nfurg){ //en el caso de el numero de furgonetas sea menor que la mitad de las estaciones
             for(int j = 0; j < nfurg; ++j){
                 int g = Math.min(estaciones.get(nest-j-1).getNumBicicletasNoUsadas(),30);
-                int km = distanciaManhattan(estaciones.get((int)beneficio[j][1]),estaciones.get((int)beneficio[nest-j-1][1]));
+                double km = furgonetas.distanciaManhattan(estaciones.get((int)beneficio[j][1]),estaciones.get((int)beneficio[nest-j-1][1]));
                 furgonetas.setFurgos(j, (int)beneficio[nest-j-1][1],(int)beneficio[j][1], -1, g, 0, km);
             }
         }
         else { 
             for(int j = 0; j < halfEst; ++j){
                 int g = Math.min(estaciones.get(nest-j-1).getNumBicicletasNoUsadas(),30);
-                int km = distanciaManhattan(estaciones.get((int)beneficio[j][1]),estaciones.get((int)beneficio[nest-j-1][1]));
+                double km = furgonetas.distanciaManhattan(estaciones.get((int)beneficio[j][1]),estaciones.get((int)beneficio[nest-j-1][1]));
                 furgonetas.setFurgos(j, (int)beneficio[nest-j-1][1],(int)beneficio[j][1], -1, g, 0, km);
             }
             //la otra mitad estara asignada a ninguna estacion (no disponible)
