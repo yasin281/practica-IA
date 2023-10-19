@@ -1,13 +1,13 @@
 import java.util.ArrayList;
 import java.util.List;
 import IA.Bicing.Estacion;
+import IA.Bicing.Estaciones;
 
 public class Estado{
     
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ESTARIA BIEN PONER OTROS DOS ELEMENTOS QUE SEA BENEFICIO Y COSTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //matriz de fx6 
     private double[][] furgos;
-    Estaciones estaciones;
     //funcion para inicializar esta matriz
     public void inicializarFurgos(int nfurg, int nest){
         furgos = new double[nfurg][nest];
@@ -17,7 +17,7 @@ public class Estado{
             }
         }
     }
-    
+
     //funcion para cada elemento de [][]furgo le asigne 6 enteros
     public void setFurgos(int furg, int Est0,int Est1,int Est2, int B1, int B2, double Km, double beneficio){
         furgos[furg][0] = Est0;
@@ -48,9 +48,14 @@ public class Estado{
 
 
     //OPERADOR 1 : Asignar Estación Destino/s y sus bicicletas (FxE) # varia la ruta de la furgo 
-    public void asignarEstacionDestino(int furg, int est, int bic){
-        furgos[furg][0] = est;
-        furgos[furg][1] = bic;
+    public void asignarEstacionDestino(int furg, int est0, int dest, int bic, double km,double bene){
+        furgos[furg][0] = est0;
+        furgos[furg][1] = dest;
+        furgos[furg][2] = -1;
+        furgos[furg][3] = bic;
+        furgos[furg][4] = 0;
+        furgos[furg][5] = km;
+        furgos[furg][6] = bene;
     }
 
     //OPERADOR 2: Quitar furgoneta (asignar su estacion inicial a -1)
@@ -150,6 +155,17 @@ public class Estado{
 
     //Funcion para calcular el beneficio de una solucion
 
+    public double getBeneficioTotal(){
+        double beneficio = 0;
+        for(int i = 0; i < furgos.length; ++i){
+            for(int j = 0; j < furgos[0].length; ++j){
+                if(furgos[i][j] != -1){
+                    beneficio += furgos[i][j];
+                }
+            }
+        }
+        return beneficio;
+    }
     public double getBeneficio(){
         double beneficio = 0;
         for(int i = 0; i < furgos.length; ++i){
@@ -161,11 +177,22 @@ public class Estado{
         }
         return beneficio;
     }
-
          /* Goal test */
      public boolean is_goal(){
          return false;
      }
+    
+    public Estado copy() {
+    Estado copia = new Estado();
+    copia.inicializarFurgos(furgos.length, furgos[0].length);
+
+    for (int i = 0; i < furgos.length; i++) {
+        for (int j = 0; j < furgos[0].length; j++) {
+            copia.furgos[i][j] = furgos[i][j];
+        }
+    }
+    return copia;
+}
 
 }
 

@@ -3,7 +3,7 @@ import IA.Bicing.Estacion;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Properties;
+import java.util.Properties;    
 import aima.search.framework.Problem;
 import aima.search.framework.Search;
 import aima.search.framework.SearchAgent;
@@ -19,24 +19,79 @@ public class Main {
         // Estaciones(int nest, int nbic, int dem, int seed) Constructor
         // cogemos los datos de la entrada
         Scanner sc = new Scanner(System.in);
-        int nest = sc.nextInt();
-        int nbic = sc.nextInt();
-        //nbic tiene que ser como minimo 50*nest, es menor da error
-        if(nest* 50 > nbic) {
-            System.out.println("Error: el numero de bicicletas es menor que 50*numero de estaciones");
-            System.exit(1);
-        }
-        int nfurg = sc.nextInt();
-        int dem = sc.nextInt();
-        int seed = sc.nextInt();
+        // int nest = sc.nextInt();
+        // int nbic = sc.nextInt();
+        // //nbic tiene que ser como minimo 50*nest, es menor da error
+        // if(nest* 50 > nbic) {
+        //     System.out.println("Error: el numero de bicicletas es menor que 50*numero de estaciones");
+        //     System.exit(1);
+        // }
+        // int nfurg = sc.nextInt();
+        // int dem = sc.nextInt();
+        // int seed = sc.nextInt();
+        int nest = 25;
+        int nbic = 1250;
+        int nfurg = 5;
+        int dem = 0;
+        int seed = 1234;
 
         //ahora pasamos estos datos a la clase estaciones
         Estaciones estaciones = new Estaciones(nest, nbic, dem, seed);
 
         Estado furgonetas = new Estado();
-        furgonetas.inicializarFurgos(nfurg, 6);
+        furgonetas.inicializarFurgos(nfurg, 7);
 
 
+        //para cada estacion calcula las bicicletas no usadas
+        int f = 0;
+        for(int i = 0; i < nest; ++i){
+            if(estaciones.get(i).getNumBicicletasNext()-estaciones.get(i).getNumBicicletasNoUsadas()- estaciones.get(i).getDemanda()> 0) {
+                f += estaciones.get(i).getNumBicicletasNext()-estaciones.get(i).getNumBicicletasNoUsadas()-estaciones.get(i).getDemanda();
+            }
+        }
+        //muestra f
+        System.out.println("bicicletas no usadas: " + f);
+
+        //solucion furgonetas sin origen ni destino asignado
+        for(int i = 0; i < nfurg; ++i){
+            furgonetas.setFurgos(i, -1, 0, 0, 0, 0, 0,0);
+        }
+
+        try{
+            Problem problem;
+            problem = new Problem(furgonetas, new Sucesores(), new EstadoSolucion(), new Heuristica());
+            Search search = new HillClimbingSearch();
+            SearchAgent agent = new SearchAgent(problem, search);
+
+            printActions(agent.getActions());
+            printInstrumentation(agent.getInstrumentation());
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        System.out.println("Beneficio total: " + furgonetas.getBeneficioTotal());
+
+
+    }
+
+        private static void printInstrumentation(Properties properties) {
+        Iterator keys = properties.keySet().iterator();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            String property = properties.getProperty(key);
+            System.out.println(key + " : " + property);
+        }
+        }
+            private static void printActions(List actions) {
+        for (int i = 0; i < actions.size(); i++) {
+            String action = (String) actions.get(i);
+            System.out.println(action);
+        }
+    }
+        
+    
+}
 
         // //solucion facil --> Furgo[0] coje en Estaciones[0] y lo deja en Estaciones[1]
         // int i = 0;
@@ -56,7 +111,7 @@ public class Main {
 
 
         //solucion desarollada --> un arraylist de tantos elementos como estaciones y donde cada posicion tiene 2 elementos, donde el primer elemento es la beneficio y el segundo es la posicion de la estacion
-        
+        /*
         double[][] beneficio;
         beneficio = new double[nest][2];
         for(int j = 0; j < nest; ++j){
@@ -99,39 +154,9 @@ public class Main {
                 furgonetas.setFurgos(j, -1, 0, 0, 0, 0, 0,0);
             }
         }
-
         furgonetas.printFurgos();
-        try{
-            Problem problem;
-            problem = new Problem(furgonetas, new Sucesores(), new EstadoSolucion(), new Heuristica());
-            Search search = new HillClimbingSearch();
-            SearchAgent agent = new SearchAgent(problem, search);
-
-            printActions(agent.getActions());
-            printInstrumentation(agent.getInstrumentation());
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
-
-
-        private static void printInstrumentation(Properties properties) {
-        Iterator keys = properties.keySet().iterator();
-        while (keys.hasNext()) {
-            String key = (String) keys.next();
-            String property = properties.getProperty(key);
-            System.out.println(key + " : " + property);
-        }
-        }
-            private static void printActions(List actions) {
-        for (int i = 0; i < actions.size(); i++) {
-            String action = (String) actions.get(i);
-            System.out.println(action);
-        }
-    }
-        
-    
-}
-
+        */
+               // //para cada estacion dame su demanda su bicis no usadas y sus bicis next
+        // for(int i = 0 ; i < nest; ++i){
+        //     System.out.println("Demanda " + estaciones.get(i).getDemanda() + " | No usadas " + estaciones.get(i).getNumBicicletasNoUsadas() + " | Next " +  estaciones.get(i).getNumBicicletasNext() + " ---> " + (estaciones.get(i).getNumBicicletasNext()-estaciones.get(i).getDemanda()) +);
+        // }
