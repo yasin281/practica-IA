@@ -7,6 +7,7 @@ public class Estado{
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ESTARIA BIEN PONER OTROS DOS ELEMENTOS QUE SEA BENEFICIO Y COSTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //matriz de fx6 
     private double[][] furgos;
+    Estaciones estaciones;
     //funcion para inicializar esta matriz
     public void inicializarFurgos(int nfurg, int nest){
         furgos = new double[nfurg][nest];
@@ -18,13 +19,14 @@ public class Estado{
     }
     
     //funcion para cada elemento de [][]furgo le asigne 6 enteros
-    public void setFurgos(int furg, int Est0,int Est1,int Est2, int B1, int B2, double Km){
+    public void setFurgos(int furg, int Est0,int Est1,int Est2, int B1, int B2, double Km, double beneficio){
         furgos[furg][0] = Est0;
         furgos[furg][1] = Est1;
         furgos[furg][2] = Est2;
         furgos[furg][3] = B1;
         furgos[furg][4] = B2;
         furgos[furg][5] = Km;
+        furgos[furg][6] = beneficio;
     }
     
     //imprime la matriz de furgos
@@ -57,23 +59,25 @@ public class Estado{
     }
 
     //OPERADOR 3: añadir furgo (solo se puede añadir si su estacion inicial es -1), le asignamos una estacion inicial, una estacion destino y numeros de bicicletas que transporta y los kilomertos
-    public void añadirFurgoneta(int furg, int estInicial, int estDestino, int bic, double km){
+    public void añadirFurgoneta(int furg, int estInicial, int estDestino, int bic, double km, double beneficio){
         furgos[furg][0] = estInicial;
         furgos[furg][1] = estDestino;
         furgos[furg][2] = -1;
         furgos[furg][3] = bic;
         furgos[furg][4] = 0;
         furgos[furg][5] = km;
+        furgos[furg][6] = beneficio;
     }
 
     //OPERADOR 4: asignar dos estaciones destino y sus bicicletas (FxE) # varia la ruta de la furgo y sus kilometros
-    public void asignarEstacionDestino(int furg,int est0, int est1, int bic1, int est2, int bic2, int km){
+    public void asignarEstacionDestino(int furg,int est0, int est1, int bic1, int est2, int bic2, int km, double beneficio){
         furgos[furg][0] = est0;
         furgos[furg][1] = est1;
         furgos[furg][2] = est2;
         furgos[furg][3] = bic1;
         furgos[furg][4] = bic2;
         furgos[furg][5] = km;
+        furgos[furg][6] = beneficio;
 
     }
 
@@ -88,6 +92,18 @@ public class Estado{
             }
         }
         return vale;
+    }
+
+    //OPERADOR 5: asignar dos estaciones destino y sus bicicletas (FxE) # varia la ruta de la furgo y sus kilometros
+    public void asignarEstacionDestino2(int furg,int est0, int est1, int est2, int bic1, int bic2, int km, double beneficio){
+        furgos[furg][0] = est0;
+        furgos[furg][1] = est1;
+        furgos[furg][2] = est2;
+        furgos[furg][3] = bic1;
+        furgos[furg][4] = bic2;
+        furgos[furg][5] = km;
+        furgos[furg][6] = beneficio;
+
     }
 
     //Getters
@@ -145,6 +161,11 @@ public class Estado{
         }
         return beneficio;
     }
+
+         /* Goal test */
+     public boolean is_goal(){
+         return false;
+     }
 
 }
 

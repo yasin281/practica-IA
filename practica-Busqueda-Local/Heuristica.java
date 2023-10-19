@@ -1,5 +1,5 @@
 
-package Bicing;
+//package Bicing;
 
 import aima.search.framework.HeuristicFunction;
 

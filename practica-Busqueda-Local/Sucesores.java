@@ -1,6 +1,5 @@
 
-package Bicing;
-
+//package Bicing;
 import aima.search.framework.SuccessorFunction;
 import java.util.List;
 import aima.search.framework.Successor;
@@ -26,10 +25,9 @@ public class Sucesores implements SuccessorFunction {
         y lo añadimos a retval
          */
 
-        //recorremos todas las furgonetas
+        //OPERADOR ASIGNAR UN DESTINO A LAS FURGONETAS
         
         
-
         return retval;
 
     }

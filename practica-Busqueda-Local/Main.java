@@ -85,22 +85,53 @@ public class Main {
             for(int j = 0; j < nfurg; ++j){
                 int g = Math.min(estaciones.get(nest-j-1).getNumBicicletasNoUsadas(),30);
                 double km = furgonetas.distanciaManhattan(estaciones.get((int)beneficio[j][1]),estaciones.get((int)beneficio[nest-j-1][1]));
-                furgonetas.setFurgos(j, (int)beneficio[nest-j-1][1],(int)beneficio[j][1], -1, g, 0, km);
+                furgonetas.setFurgos(j, (int)beneficio[nest-j-1][1],(int)beneficio[j][1], -1, g, 0, km,0);
             }
         }
         else { 
             for(int j = 0; j < halfEst; ++j){
                 int g = Math.min(estaciones.get(nest-j-1).getNumBicicletasNoUsadas(),30);
                 double km = furgonetas.distanciaManhattan(estaciones.get((int)beneficio[j][1]),estaciones.get((int)beneficio[nest-j-1][1]));
-                furgonetas.setFurgos(j, (int)beneficio[nest-j-1][1],(int)beneficio[j][1], -1, g, 0, km);
+                furgonetas.setFurgos(j, (int)beneficio[nest-j-1][1],(int)beneficio[j][1], -1, g, 0, km,0);
             }
             //la otra mitad estara asignada a ninguna estacion (no disponible)
             for(int j = halfEst; j < nfurg; ++j){
-                furgonetas.setFurgos(j, -1, 0, 0, 0, 0, 0);
+                furgonetas.setFurgos(j, -1, 0, 0, 0, 0, 0,0);
             }
         }
 
         furgonetas.printFurgos();
+        try{
+            Problem problem;
+            problem = new Problem(furgonetas, new Sucesores(), new EstadoSolucion(), new Heuristica());
+            Search search = new HillClimbingSearch();
+            SearchAgent agent = new SearchAgent(problem, search);
+
+            printActions(agent.getActions());
+            printInstrumentation(agent.getInstrumentation());
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
+
+
+
+        private static void printInstrumentation(Properties properties) {
+        Iterator keys = properties.keySet().iterator();
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            String property = properties.getProperty(key);
+            System.out.println(key + " : " + property);
+        }
+        }
+            private static void printActions(List actions) {
+        for (int i = 0; i < actions.size(); i++) {
+            String action = (String) actions.get(i);
+            System.out.println(action);
+        }
+    }
+        
+    
 }
 
