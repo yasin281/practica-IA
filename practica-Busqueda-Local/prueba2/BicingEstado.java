@@ -8,6 +8,14 @@ import IA.Bicing.Estaciones;
 // import IA.Connectat.ES;
 
 public class BicingEstado{
+
+    /* 
+    HABRIA QUE PONER OTRO ELEMENTO EN LA REPRESENTACION PARA IR CALCULANDO EL COSTE, QUE DEPENDE DE LAS BICICLETAS Y 
+    LOS KILOMETROS, LAS BICICLETAS LAS TRACKEAMOS PERO SI HAY DOS VIAJES ES DICIFIL SABER CUANTOS KM ES EL PRIMER VIAJE 
+    Y CUANTO EL SEGUNDO
+    */
+
+
     // Punto a tener en cuenta por parte de J
     // estacionCogida (para cada estacion) Opcional si no hay origen
     // bicisQueFaltan (para cada estacion) HECHO
@@ -99,7 +107,6 @@ public class BicingEstado{
             furgos[Idfurg][6] += furgos[Idfurg][3];//calculaBeneficioRuta(e1,dest1);
     }
 
-    /*FALTA POR IMPLEMENTAR */
 
     //OPERADOR 2 : DADO UNA FURGONETA ASIGNA UN DESTINO 2
     //tiene sentido ir a otro destino si aun sobran bicicletas cuando ya hemos ido
@@ -143,6 +150,121 @@ public class BicingEstado{
     }
 
 
+
+    //OPERADOR 3 : Cambiar Origen factor ramificacion F*E*E
+    /*
+    CASO 1 : FURGONETA CON ORIGEN ESTABLECIDO
+    Parametros de entrada : furgo , IDnewOrigin 
+        Habra que ver cual es el nuevo coste desde el nuevo origen
+        Tambien habra que comprobar que hay beneficio, puede que la estacion origen nueva esté mas cerca pero no tenga 
+        bicicletas sobrantes
+
+
+    CASO 2 : FURGONETA SIN ORIGEN ESTABLECIDO
+    Parametros de entrada : origen = -1; estacion origen nuevo
+        Habra que ver si hay beneficio hay beneficio yendo de la estacion X a la estacion objetivo
+    */
+
+   public void CambiarOrigen(int Idfurg,int IDnewOrigin){
+    if(furgos[Idfurg][0] == IDnewOrigin  || bicisQueFaltan[IDnewOrigin] >= 0) return;
+    if(furgos[Idfurg][0]!=-1){//caso en el que a la furgo tiene origenes y tal vez destino
+        if(furgos[Idfurg][1] == -1) //caso en el que aun no se le hay asignada ningun destino
+        {
+            furgos[Idfurg][0] = IDnewOrigin;
+            //asignar bicicletas, beneficio y kilometros 
+            // U.U.U.U ESTA BORRADO PORQUE SOLO SE ASGINA ORIGEN, NO DESTINOS
+            // furgos[Idfurg][3] = Math.min(biciQueSobran[IDnewOrigin],bicisQueFaltan[EstacionX]);
+            // bicisQueFaltan[EstacionX] -= furgos[Idfurg][3];
+            // biciQueSobran[IDnewOrigin] -= furgos[Idfurg][3];
+            // furgos[Idfurg][5] += distanciaManhattan(estaciones.get(IDnewOrigin),estaciones.get(EstacionX))/1000;
+            // furgos[Idfurg][6] += furgos[Idfurg][3];
+        }
+        else //caso en el tiene destino 1
+        {
+            if(furgos[Idfurg][2] == -1)//solo tiene un destino, miramos diferentes origenes, para ese destino que teniamos
+            {
+                double km = (int)distanciaManhattan(estaciones.get((int)furgos[Idfurg][0]),estaciones.get((int)furgos[Idfurg][1]));
+                furgos[Idfurg][5] -= km/1000;
+                furgos[Idfurg][0] = IDnewOrigin;
+                km = (int)distanciaManhattan(estaciones.get((int)furgos[Idfurg][0]),estaciones.get((int)furgos[Idfurg][1]));
+                furgos[Idfurg][5] += km/1000;
+                //quitar beneficio y bicicletas etc...anterior
+                bicisQueFaltan[(int)furgos[Idfurg][1]] += furgos[Idfurg][3];
+                biciQueSobran[(int)furgos[Idfurg][0]] += furgos[Idfurg][3];
+                furgos[Idfurg][6] -= furgos[Idfurg][3];
+                //asignar nuevo destino
+                furgos[Idfurg][3] = Math.min(biciQueSobran[IDnewOrigin],bicisQueFaltan[(int)furgos[Idfurg][1]]);
+                bicisQueFaltan[(int)furgos[Idfurg][1]] -= furgos[Idfurg][3];
+                biciQueSobran[IDnewOrigin] -= furgos[Idfurg][3];
+                furgos[Idfurg][6] += furgos[Idfurg][3];
+
+            }
+            else //caso en el que tiene dos destinos
+            { //realmente solo hace falta que reste km con el primer estacion, ya que de destino 1 a 2 es igual km
+                double km = (int)distanciaManhattan(estaciones.get((int)furgos[Idfurg][0]),estaciones.get((int)furgos[Idfurg][1]));
+                furgos[Idfurg][5] -= km/1000;
+                furgos[Idfurg][0] = IDnewOrigin;
+                km = (int)distanciaManhattan(estaciones.get((int)furgos[Idfurg][1]),estaciones.get(IDnewOrigin));
+                furgos[Idfurg][5] += km/1000;
+                //quitar beneficio y bicicletas etc...anterior del destino 1 y 2
+                bicisQueFaltan[(int)furgos[Idfurg][1]] += furgos[Idfurg][3];
+                biciQueSobran[(int)furgos[Idfurg][0]] += furgos[Idfurg][3];
+                furgos[Idfurg][6] -= furgos[Idfurg][3];
+                bicisQueFaltan[(int)furgos[Idfurg][2]] += furgos[Idfurg][4];
+                biciQueSobran[(int)furgos[Idfurg][1]] += furgos[Idfurg][4];
+                furgos[Idfurg][6] -= furgos[Idfurg][4];
+                //asignar nuevo destino
+                furgos[Idfurg][3] = Math.min(biciQueSobran[IDnewOrigin],bicisQueFaltan[(int)furgos[Idfurg][1]]);
+                bicisQueFaltan[(int)furgos[Idfurg][1]] -= furgos[Idfurg][3];
+                biciQueSobran[IDnewOrigin] -= furgos[Idfurg][3];
+                furgos[Idfurg][6] += furgos[Idfurg][3];
+                furgos[Idfurg][4] = Math.min(biciQueSobran[IDnewOrigin],bicisQueFaltan[(int)furgos[Idfurg][2]]);
+                bicisQueFaltan[(int)furgos[Idfurg][2]] -= furgos[Idfurg][4];
+                biciQueSobran[IDnewOrigin] -= furgos[Idfurg][4];
+                furgos[Idfurg][6] += furgos[Idfurg][4];
+
+            }
+        }
+    }
+    else { //caso en el que no tiene origen
+            furgos[Idfurg][0] = IDnewOrigin;
+    }   
+   }
+
+
+
+   //OPERADOR 4: SWAPEAR RUTA, EN VEZ DE HACER 0 -> 1 -> 2  HACER 0 -> 2 -> 1
+   //distancia entre 1 y 2 son el mismo, pero tal vez es mejor ir a 2 y luego a 1 que a 1 y luego a 2
+
+   public void SwapRuta(int Idfurg)
+   {
+    if(furgos[Idfurg][1] == -1 || furgos[Idfurg][2] == -1 || furgos[Idfurg][0] == -1) return;
+
+    double km = (int)distanciaManhattan(estaciones.get((int)furgos[Idfurg][0]),estaciones.get((int)furgos[Idfurg][1]));
+    furgos[Idfurg][5] -= km/1000;
+    km = (int)distanciaManhattan(estaciones.get((int)furgos[Idfurg][0]),estaciones.get((int)furgos[Idfurg][2]));
+    furgos[Idfurg][5] += km/1000;
+    
+    //ahora hay cambiar el orden de bicis llevadas, ahora llevaremos lo maximo posible al destino 2 y las sobras al destino 1
+    furgos[Idfurg][6] -= furgos[Idfurg][3];
+    furgos[Idfurg][6] -= furgos[Idfurg][4];
+    bicisQueFaltan[(int)furgos[Idfurg][1]] += furgos[Idfurg][3];
+    bicisQueFaltan[(int)furgos[Idfurg][2]] += furgos[Idfurg][4];
+    biciQueSobran[(int)furgos[Idfurg][0]] += furgos[Idfurg][3];
+    biciQueSobran[(int)furgos[Idfurg][0]] += furgos[Idfurg][4];
+    furgos[Idfurg][3] = Math.min(biciQueSobran[(int)furgos[Idfurg][0]],bicisQueFaltan[(int)furgos[Idfurg][2]]);
+    biciQueSobran[(int)furgos[Idfurg][0]] -= furgos[Idfurg][3];
+    double aux = furgos[Idfurg][1]; //aqui esta el destino 1 anterior  que ahora sera el destino 2
+    furgos[Idfurg][1] = furgos[Idfurg][2];//el antiguo destino 2 es ahora destino 1
+    furgos[Idfurg][2] = aux;
+    furgos[Idfurg][4] = Math.min(biciQueSobran[(int)furgos[Idfurg][0]],bicisQueFaltan[(int)aux]);
+    biciQueSobran[(int)furgos[Idfurg][0]] -= furgos[Idfurg][4];
+    furgos[Idfurg][6] += furgos[Idfurg][3];
+    furgos[Idfurg][6] += furgos[Idfurg][4];
+    bicisQueFaltan[(int)furgos[Idfurg][1]] -= furgos[Idfurg][3];
+    bicisQueFaltan[(int)aux] -= furgos[Idfurg][4];
+
+   }
 
 
     //solucion desarollada --> un arraylist de tantos elementos como estaciones y donde cada posicion tiene 2 elementos, donde el primer elemento es la beneficio y el segundo es la posicion de la estacion
