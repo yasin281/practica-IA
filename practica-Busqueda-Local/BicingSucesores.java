@@ -7,37 +7,59 @@ import java.util.ArrayList;
 public class BicingSucesores implements SuccessorFunction {
     public List<Successor> getSuccessors(Object state) {
         ArrayList<Successor> retval = new ArrayList<>();
-        Estado board = (Estado) state;
-       
+        BicingEstado board = (BicingEstado) state;
+        // Asignar Destino 1
         for(int i = 0; i < board.getNumFurgonetas();++i){
             for(int j = 0; j < board.getNest(); ++j){
-                Estado new_state=new Estado(board);
+                BicingEstado new_state=new BicingEstado(board);
                 new_state.cambiarDestino(i,j);
                 String s = "Furgoneta " + i + " Destino " + j;
                 String action= "asignar destino 1 " +s;
                 
+                Successor successor = new Successor(action,new_state);         
+                retval.add(successor);
+            }
+            
+        }
+        // Asignar Destino 2
+        for(int i = 0; i < board.getNumFurgonetas();++i){
+            for(int j = 0; j < board.getNest(); ++j){
+                BicingEstado new_state=new BicingEstado(board);
+                new_state.cambiarDestino2(i,j);
+                String s = "Furgoneta " + i + " Destino1 " + new_state.getEstacionDestino1(i) + " Destino2 " + j;
+                String action= "asignar destino 2 " +s;
+                    
                 Successor successor = new Successor(action,new_state);
-                
+                    
                 retval.add(successor);
             }
         }
-        //Asignar Destino 2
-        // for(int i = 0; i < board.getNumFurgonetas();++i){
-        //     for(int j = 0; j < board.getNest(); ++j){
-                
-        //         Estado new_state=new Estado(board);
-        //         f(new_state.puedeIrDestino2(i,j)){//ESTA COMPROBACION SE PUEDE HACER EN EL ESTADO TAMBIEN
-        //             new_state.asignarDestino2(i,j);
-        //             String s = "Furgoneta " + i + " Destino " + j;
-        //             String action= "asignar destino 2 " +s;
+        
+        //cambiar origen
+        for(int i = 0; i < board.getNumFurgonetas();++i){
+            for(int j = 0; j < board.getNest(); ++j){
+                BicingEstado new_state=new BicingEstado(board);
+                new_state.CambiarOrigen(i,j);
+                String s = "Furgoneta " + i + " Origen " + j;
+                String action= "cambiar origen " +s;
                     
-        //             Successor successor = new Successor(action,new_state);
+                Successor successor = new Successor(action,new_state);
                     
-        //             retval.add(successor);
-        //         }
-        //     }
-        // }
+                retval.add(successor);
+            }
+        }
 
+        //swapear ruta
+        for(int i = 0; i < board.getNumFurgonetas();++i){
+                BicingEstado new_state=new BicingEstado(board);
+                new_state.SwapRuta(i);
+                String s = "Furgoneta " + i + " Alterna su recu rrido";
+                String action= "swapear ruta " +s;
+                    
+                Successor successor = new Successor(action,new_state);
+                    
+                retval.add(successor);
+        }
         return retval;
     }
 }

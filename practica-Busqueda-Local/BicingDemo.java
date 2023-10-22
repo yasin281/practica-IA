@@ -1,12 +1,18 @@
 import IA.Bicing.Estaciones;
+import IA.Bicing.Estacion;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Properties;    
 import aima.search.framework.Problem;
 import aima.search.framework.Search;
 import aima.search.framework.SearchAgent;
 import aima.search.informed.HillClimbingSearch;
+import aima.search.framework.GraphSearch;
+//import para formulas matematicas
+import static java.lang.Math.abs;
 
+import java.util.Scanner;
 public class BicingDemo {
     public static void main(String[] args) {
         // Estaciones(int nest, int nbic, int dem, int seed) Constructor
@@ -30,16 +36,15 @@ public class BicingDemo {
 
         Estaciones estaciones = new Estaciones(nest, nbic, dem, seed);
 
-        Estado furgonetas = new Estado(estaciones);
+        BicingEstado furgonetas = new BicingEstado(estaciones);
         furgonetas.inicializarFurgos(nfurg);
         furgonetas.GreedyIni();
         BicingHillClimbingSearch(furgonetas);
     }
 
-    private static void BicingHillClimbingSearch(Estado furgonetas) {
-        System.out.println("\nTSP HillClimbing  -->");
+    private static void BicingHillClimbingSearch(BicingEstado furgonetas) {
         try {
-            Problem problem =  new Problem(furgonetas,new Sucesores(), new EstadoSolucion(),new Heuristica());
+            Problem problem =  new Problem(furgonetas,new BicingSucesores(), new BicingEstadoSolucion(),new BicingHeuristica());
             Search search =  new HillClimbingSearch();
             SearchAgent agent = new SearchAgent(problem,search);
             
@@ -49,7 +54,8 @@ public class BicingDemo {
         }   catch (Exception e) {
             e.printStackTrace();
         }
-        furgonetas.printFurgos();
+        //furgonetas.printFurgos();
+        //furgonetas.printAsigFurgos();
     }
 
 
