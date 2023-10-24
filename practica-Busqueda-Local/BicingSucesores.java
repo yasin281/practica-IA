@@ -14,7 +14,7 @@ public class BicingSucesores implements SuccessorFunction {
                 if(board.condicionAplicabilidadDestino1(i,j)){
                     BicingEstado new_state=new BicingEstado(board);
                     new_state.cambiarDestino(i,j);
-                    String s = "Furgoneta " + i + " Destino " + j + "Numero de bicis: " + new_state.Bicis1(i) ;
+                    String s = "Furgoneta " + i + " Destino " + j + " Numero de bicis: " + new_state.Bicis1(i) ;
                     String action= "asignar destino 1 " +s;
                     
                     Successor successor = new Successor(action,new_state);         
