@@ -8,7 +8,11 @@ vector<vector<Pair<Estacion,nb>>> rutasFurgonetas;
 //Ejemplo
 F[0]=vec3({E0,nb a recoger},{Ed,nb-x},{Ed2,x})
 
-
+F[i][0]=origen
+F[i][1]=destino 1
+F[i][2]=destino 2
+F[i][3]=nb destino 1
+F[i][4]=nb destino 2
 
 
 COMPILACION (1):
