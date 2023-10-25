@@ -30,6 +30,31 @@ public class BicingEstado{
         this.estaciones = estaciones;
     }
 
+
+
+    public void ImprimeEstaciones(){
+
+        for(int i = 0; i < estaciones.size(); i++){
+            sacaInfo(estaciones.get(i),i);
+        }
+    }
+
+    public void sacaInfo(Estacion e, int i){
+        int demanda = e.getDemanda();
+        int next = e.getNumBicicletasNext();
+        int nousadas = e.getNumBicicletasNoUsadas();
+        
+        System.out.print("E" + i + "| Demanda: " + demanda + " Next: " + next + " NoUsadas: " + nousadas + " | DifDemanda-Next: " + (demanda-next));
+        int llevar = 0;
+        if(e.getNumBicicletasNext()-e.getDemanda()>0){ 
+            int aux=(e.getNumBicicletasNext()-e.getDemanda());
+           llevar = Math.min(Math.min(aux,30),e.getNumBicicletasNoUsadas());
+        }
+        System.out.println(" Llevar: " + llevar);
+    }
+
+
+
     //Funcion que inicializa las furgonetas (todos sin estacion inicial ni destinos)
     //inicializa los vectores de bicis que faltan y sobran
     public void inicializarFurgos(int nfurg){
@@ -55,12 +80,13 @@ public class BicingEstado{
             
             bicisQueFaltan[i] = Math.max(estaciones.get(i).getDemanda() - estaciones.get(i).getNumBicicletasNext(),0);
             
-            if(estaciones.get(i).getNumBicicletasNext()-estaciones.get(i).getDemanda()>0){ 
-                double aux=(estaciones.get(i).getNumBicicletasNext()-estaciones.get(i).getDemanda());
-                biciQueSobran[i] = Math.min(Math.min(aux,30),estaciones.get(i).getNumBicicletasNoUsadas());
-            }
+            // if(estaciones.get(i).getNumBicicletasNext()-estaciones.get(i).getDemanda()>0){ 
+            //     double aux=(estaciones.get(i).getNumBicicletasNext()-estaciones.get(i).getDemanda());
+            //     biciQueSobran[i] = Math.min(Math.min(aux,30),estaciones.get(i).getNumBicicletasNoUsadas());
+            // }
             
-            else biciQueSobran[i] = 0;
+            // else biciQueSobran[i] = 0;
+            biciQueSobran[i] = Math.min(estaciones.get(i).getNumBicicletasNoUsadas(),30);
         }
 
     }
@@ -72,7 +98,7 @@ public class BicingEstado{
     //Verifca condicion de aplicabilidad del operador 1 : cambiarDestino
     //Si el destino es el mismo que el que ya tiene o no hay bicis que faltan en la estacion o ya tiene un destino asignado
     public boolean condicionAplicabilidadDestino1(int Idfurg, int IDdest){
-        if((furgos[Idfurg][0]==IDdest) || (bicisQueFaltan[IDdest]<= 0) || furgos[Idfurg][0]==-1) return false;
+        if((furgos[Idfurg][0]==IDdest)  || furgos[Idfurg][0]==-1) return false;
         return true;
     }
 
@@ -82,31 +108,34 @@ public class BicingEstado{
         //Si el destino es el mismo que el que ya tiene o no hay bicis que faltan en la estacion o ya tiene un destino asignado
         //Si ya tiene un destino asignado se le quita las bicis que se lleva y se le suma a las que faltan 
         if(furgos[Idfurg][1]!=-1){
-            Estacion estAntiguo=estaciones.get((int)furgos[Idfurg][1]);
-            
-
-            if(bicisQueFaltan[(int)furgos[Idfurg][1]]>0) {
-                double cubrirFalta=bicisQueFaltan[(int)furgos[Idfurg][1]]-furgos[Idfurg][3];
-                if(cubrirFalta<0){
-                    biciQueSobran[(int)furgos[Idfurg][0]]+=-1*cubrirFalta;
-                    bicisQueFaltan[(int)furgos[Idfurg][1]]=0;
-                }
-                else bicisQueFaltan[(int)furgos[Idfurg][1]]-=furgos[Idfurg][3];
+            bicisQueFaltan[(int)furgos[Idfurg][1]]+=furgos[Idfurg][3];
+            biciQueSobran[(int)furgos[Idfurg][0]]+=(furgos[Idfurg][3]);
+            //si tiene un destino 2 asignado
+            if(furgos[Idfurg][2]!=-1){
+                bicisQueFaltan[(int)furgos[Idfurg][2]]+=furgos[Idfurg][4];
+                biciQueSobran[(int)furgos[Idfurg][0]]+=(furgos[Idfurg][4]);
             }
-            else biciQueSobran[(int)furgos[Idfurg][1]]+=furgos[Idfurg][3];
-            //restar el beneficio de la ruta            
-            bicisQueFaltan[(int)furgos[Idfurg][0]]+=furgos[Idfurg][3];
         }
-        Estacion e1=estaciones.get(getEstacionInicial(Idfurg));
-        Estacion dest1=estaciones.get(IDdest);
-
         furgos[Idfurg][1] = IDdest;
-        furgos[Idfurg][2] = -1;
-
-        furgos[Idfurg][3]  = Math.min(bicisQueFaltan[IDdest],biciQueSobran[(int)furgos[Idfurg][0]]);
-
+        
+        furgos[0][3]=Math.min(bicisQueFaltan[IDdest],biciQueSobran[(int)furgos[Idfurg][0]]);
         biciQueSobran[(int)furgos[Idfurg][0]]-=furgos[Idfurg][3];
-        bicisQueFaltan[IDdest]-=furgos[Idfurg][3];        
+        bicisQueFaltan[IDdest]-=furgos[Idfurg][3];
+        //si  existe un destino 2 asignado
+        if(furgos[Idfurg][2]!=-1){
+            furgos[Idfurg][4]  = Math.min(bicisQueFaltan[(int)furgos[Idfurg][2]],biciQueSobran[(int)furgos[Idfurg][0]]);
+            biciQueSobran[(int)furgos[Idfurg][0]]-=furgos[Idfurg][4];
+            bicisQueFaltan[(int)furgos[Idfurg][2]]-=furgos[Idfurg][4];
+        }
+        else{
+            furgos[Idfurg][2]=-1;
+            furgos[Idfurg][4]=0;
+        }
+
+        // furgos[Idfurg][3]  = Math.min(bicisQueFaltan[IDdest],biciQueSobran[(int)furgos[Idfurg][0]]);
+
+        // biciQueSobran[(int)furgos[Idfurg][0]]-=furgos[Idfurg][3];
+        // bicisQueFaltan[IDdest]-=furgos[Idfurg][3];        
     }
 
 
@@ -159,7 +188,6 @@ public class BicingEstado{
     //Condicion de aplicabilidad del operador 3: CambiarOrigen
     //Si el origen es el mismo que el que ya tiene o no hay bicis que sobran en la estacion o ya tiene un origen asignado
     public boolean condicionAplicabilidadOrigen(int Idfurg, int IDnewOrigin){
-        if(Idfurg < 0 || IDnewOrigin < 0 || Idfurg >=furgos.length || IDnewOrigin >= estaciones.size() ) return false;
         if(esOrigenEnUso(IDnewOrigin) || (IDnewOrigin==furgos[Idfurg][1] ) || (IDnewOrigin==furgos[Idfurg][2])) return false;
         return true;
     }
@@ -230,27 +258,39 @@ public class BicingEstado{
    }
 
 
-   //OPERADOR 4: SWAPEAR RUTA, EN VEZ DE HACER 0 -> 1 -> 2  HACER 0 -> 2 -> 1
-   //distancia entre 1 y 2 son el mismo, pero tal vez es mejor ir a 2 y luego a 1 que a 1 y luego a 2
-   public void SwapRuta(int Idfurg){
-    if(furgos[Idfurg][1] == -1 || furgos[Idfurg][2] == -1 || furgos[Idfurg][0] == -1) return;
-        bicisQueFaltan[(int)furgos[Idfurg][1]] += furgos[Idfurg][3];
-        bicisQueFaltan[(int)furgos[Idfurg][2]] += furgos[Idfurg][4];
-        biciQueSobran[(int)furgos[Idfurg][0]] += furgos[Idfurg][3];
-        biciQueSobran[(int)furgos[Idfurg][0]] += furgos[Idfurg][4];
-        furgos[Idfurg][3] = Math.min(biciQueSobran[(int)furgos[Idfurg][0]],bicisQueFaltan[(int)furgos[Idfurg][2]]);
-        biciQueSobran[(int)furgos[Idfurg][0]] -= furgos[Idfurg][3];
-        double aux = furgos[Idfurg][1]; //aqui esta el destino 1 anterior  que ahora sera el destino 2
-        furgos[Idfurg][1] = furgos[Idfurg][2];//el antiguo destino 2 es ahora destino 1
-        furgos[Idfurg][2] = aux;
-        furgos[Idfurg][4] = Math.min(biciQueSobran[(int)furgos[Idfurg][0]],bicisQueFaltan[(int)aux]);
-        biciQueSobran[(int)furgos[Idfurg][0]] -= furgos[Idfurg][4];
-        // furgos[Idfurg][6] += furgos[Idfurg][3];
-        // furgos[Idfurg][6] += furgos[Idfurg][4];
-        bicisQueFaltan[(int)furgos[Idfurg][1]] -= furgos[Idfurg][3];
-        bicisQueFaltan[(int)aux] -= furgos[Idfurg][4];
+//    //OPERADOR 4: SWAPEAR RUTA, EN VEZ DE HACER 0 -> 1 -> 2  HACER 0 -> 2 -> 1
+//    //distancia entre 1 y 2 son el mismo, pero tal vez es mejor ir a 2 y luego a 1 que a 1 y luego a 2
+//    public void SwapRuta(int Idfurg){
+//     if(furgos[Idfurg][1] == -1 || furgos[Idfurg][2] == -1 || furgos[Idfurg][0] == -1) return;
+//         bicisQueFaltan[(int)furgos[Idfurg][1]] += furgos[Idfurg][3];
+//         bicisQueFaltan[(int)furgos[Idfurg][2]] += furgos[Idfurg][4];
+//         biciQueSobran[(int)furgos[Idfurg][0]] += furgos[Idfurg][3];
+//         biciQueSobran[(int)furgos[Idfurg][0]] += furgos[Idfurg][4];
+//         furgos[Idfurg][3] = Math.min(biciQueSobran[(int)furgos[Idfurg][0]],bicisQueFaltan[(int)furgos[Idfurg][2]]);
+//         biciQueSobran[(int)furgos[Idfurg][0]] -= furgos[Idfurg][3];
+//         double aux = furgos[Idfurg][1]; //aqui esta el destino 1 anterior  que ahora sera el destino 2
+//         furgos[Idfurg][1] = furgos[Idfurg][2];//el antiguo destino 2 es ahora destino 1
+//         furgos[Idfurg][2] = aux;
+//         furgos[Idfurg][4] = Math.min(biciQueSobran[(int)furgos[Idfurg][0]],bicisQueFaltan[(int)aux]);
+//         biciQueSobran[(int)furgos[Idfurg][0]] -= furgos[Idfurg][4];
+//         // furgos[Idfurg][6] += furgos[Idfurg][3];
+//         // furgos[Idfurg][6] += furgos[Idfurg][4];
+//         bicisQueFaltan[(int)furgos[Idfurg][1]] -= furgos[Idfurg][3];
+//         bicisQueFaltan[(int)aux] -= furgos[Idfurg][4];
 
-   }
+//    }
+
+
+    public boolean condicionAplicabilidadDesAsignar1(int Idfurg){
+        if(furgos[Idfurg][0]==-1 || furgos[Idfurg][2] != -1 || furgos[Idfurg][1] == -1) return false;
+        return true;
+    }
+
+    // //Operador 5: Dado una furgoneta desasigna un destino
+    // public void DesAsignarDestino1(int Idfurg){
+    //     //aqui entra si la furgoneta tiene un unico destino y un origen
+    //     biciQueSobran[furgos[Idfurg][0]] += furgos[Idfurg][3];
+    // }
 
 
 
@@ -451,7 +491,7 @@ public class BicingEstado{
     sin tener en cuenta el coste de transporte */
     private double heuristca1(){
         double beneficio = 0;
-        double km=0;
+
         for(int i = 0; i < furgos.length; ++i){
 
             if(furgos[i][0]!=-1 && furgos[i][1]!=-1){
@@ -460,16 +500,18 @@ public class BicingEstado{
                 Estacion destino1 = estaciones.get((int)furgos[i][1]);
 
                 beneficio = beneficio+furgos[i][3]+furgos[i][4];
-
-                if(furgos[i][2]!=-1) km+=distanciaManhattan(destino1, estaciones.get((int)furgos[i][2]))/1000;
-               
-                km+=distanciaManhattan(origen, destino1)/1000;
-
+                beneficio -= Alejo(furgos[i][3]+furgos[i][4], origen); //si quitando alejo a la demanda del origen, restamos
+                System.out.println("Beneficio: " + beneficio);
             }
         }
-        // System.out.println("Beneficio total: " + beneficio);        
-        // System.out.println("Longitud total: " + km);
         return -beneficio;
+    }
+
+    public double Alejo(double nb, Estacion origen){
+        double demanda = (double)origen.getDemanda();
+        double next = (double)origen.getNumBicicletasNext();
+        if(demanda < (next)) return 0;
+        return (next-nb);
     }
 
     /*Heuristica2: se tiene en cuenta el beneficio (=bicicletas transportadas a una estacion con demanda) a demnas
@@ -506,7 +548,7 @@ public class BicingEstado{
     }
 
     public void setHeuristica(int heuristica){
-        tipoHeuristica=heuristica;
+        this.tipoHeuristica=heuristica;
     }
 
 }

@@ -39,9 +39,9 @@ public class BicingDemo {
         int nfurg = 5;
         int dem = 0;
         int seed = 1234;
-        int iniTrivial = 0;
+        int iniTrivial = 1;
         int heuristica = 0;
-        int hillClimbing = 1;
+        int hillClimbing = 0;
 
         if(answer.equals("n")){
             System.out.println("Numero de estaciones ");
@@ -71,13 +71,17 @@ public class BicingDemo {
         BicingEstado furgonetas = new BicingEstado(estaciones);
         furgonetas.inicializarFurgos(nfurg);
 
-        if(iniTrivial == 1) furgonetas.iniTrivial();
+        furgonetas.setHeuristica(0);
+
+        //printear la informacion de los estaciones
+        furgonetas.ImprimeEstaciones();
+
+        if(iniTrivial == 0) furgonetas.iniTrivial();
         else furgonetas.GreedyIni();
 
-        if(hillClimbing == 1) BicingHillClimbingSearch(furgonetas);
+        if(hillClimbing == 0) BicingHillClimbingSearch(furgonetas);
         else BicingSimulatedAnnealingSearch(furgonetas);
 
-        furgonetas.setHeuristica(heuristica);
 
     }
 
