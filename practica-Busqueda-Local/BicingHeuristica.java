@@ -7,7 +7,7 @@ public class BicingHeuristica implements HeuristicFunction  {
    BicingEstado board=(BicingEstado)state;
    //System.out.println("Heuristica: " + board.valorHeuristica());
     double m=board.valorHeuristica();
-   return m;
+    return m;
   }
   
 }

@@ -27,7 +27,7 @@ public class BicingDemo {
         System.out.println("Semilla: 1234");
         System.out.println("Algoritmo de busqueda 0 (Hill Climbing) 1 (Simulated Annealing): 0");
         System.out.println("Tipo de heuristica 0 (sin coste) 1 (coste distancia): 0");
-        System.out.println("Tipo de inicializacion 0 (trivial) 1 (greedy): 0");
+        System.out.println("Tipo de inicializacion 0 (Trivial) 1 (Greedy): 0");
         
         System.out.println("Quieres utilizar la conifguracion por defecto? (y/n)");
         
@@ -92,8 +92,8 @@ public class BicingDemo {
             printInstrumentation(agent.getInstrumentation());
             BicingEstado finalState = (BicingEstado) search.getGoalState();
             finalState.printFurgos();
-            System.out.println("Beneficio total: " + -1*finalState.getBeneficioTotal());
-            System.out.println("Longitud total: " + finalState.getLongitudTotal());
+            System.out.println("Beneficio total: " + -1*finalState.getBeneficioTotal() + " $");
+            System.out.println("Longitud total: " + finalState.getLongitudTotal() + " Km");
         }   catch (Exception e) {
             e.printStackTrace();
         }
