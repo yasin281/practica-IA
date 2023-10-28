@@ -19,21 +19,6 @@ public class BicingDemo {
     public static void main(String[] args) {
         // Estaciones(int nest, int nbic, int dem, int seed) Constructor
         // cogemos los datos de la entrada
-        System.out.println("Configuracion por defecto:");
-        System.out.println("Numero de estaciones: 25");
-        System.out.println("Numero de bicicletas: 1250");
-        System.out.println("Numero de furgonetas: 5");
-        System.out.println("Tipo de demanda 0 (equilibrada) 1 (hora punta): 0");
-        System.out.println("Semilla: 1234");
-        System.out.println("Algoritmo de busqueda 0 (Hill Climbing) 1 (Simulated Annealing): 0");
-        System.out.println("Tipo de heuristica 0 (sin coste) 1 (coste distancia): 0");
-        System.out.println("Tipo de inicializacion 0 (trivial) 1 (greedy): 0");
-        
-        System.out.println("Quieres utilizar la conifguracion por defecto? (y/n)");
-        
-        Scanner sc = new Scanner(System.in);
-        String answer = sc.nextLine();
-        
         int nest = 25;
         int nbic = 1250;
         int nfurg = 5;
@@ -43,29 +28,43 @@ public class BicingDemo {
         int heuristica = 0;
         int hillClimbing = 1;
 
+        System.out.println("Configuracion por defecto:");
+
+        System.out.println("Numero de estaciones Predeterminado:"+nest);
+        System.out.println("Numero de bicicletas Predeterminado:"+nbic);
+        System.out.println("Numero de furgonetas Predeterminado:"+nfurg);
+        System.out.println("Tipo de demanda: 0 (equilibrada) 1 (hora punta) Predeterminado:" +dem);
+        System.out.println("Semilla Predeterminado:"+seed);
+        System.out.println("Algoritmo de busqueda: 0 (Simulated Annealing) 1 (Hill Climbing): Predeterminado:"+hillClimbing);
+        System.out.println("Tipo de heuristica 0 (sin coste) 1 (coste distancia) Predeterminado:"+heuristica);
+        System.out.println("Tipo de inicializacion 0 (trivial) 1 (greedy) Predeterminado:"+iniTrivial);
+        System.out.println("Quieres utilizar la conifguracion por defecto? (y/n)");
+        
+        Scanner sc = new Scanner(System.in);
+        String answer = sc.nextLine();
+        
         if(answer.equals("n")){
             System.out.println("Numero de estaciones ");
             nest = sc.nextInt();
             System.out.println("Numero de bicicletas: ");
             nbic = sc.nextInt();
-            if(nest* 50 > nbic) {
+            if(nest * 50 > nbic) {
                 System.out.println("Error: el numero de bicicletas es menor que 50*numero de estaciones");
                 System.exit(1);
             }
             System.out.println("Numero de furgonetas: ");
             nfurg = sc.nextInt();
-            System.out.println("Tipo de demanda 0 (equilibrada) 1 (hora punta): ");
+            System.out.println("Tipo de demanda: 0 (equilibrada) 1 (hora punta): ");
             dem = sc.nextInt();
             System.out.println("Semilla: ");
             seed = sc.nextInt();
-            System.out.println("Algoritmo de busqueda 0 (Hill Climbing) 1 (Simulated Annealing): ");
+            System.out.println("Algoritmo de busqueda: 0 (Simulated Annealing) 1 (Hill Climbing): ");
             hillClimbing = sc.nextInt();
-            System.out.println("Tipo de heuristica 0 (sin coste) 1 (coste distancia): ");
+            System.out.println("Tipo de heuristica: 0 (sin coste) 1 (coste distancia): ");
             heuristica = sc.nextInt();
-            System.out.println("Tipo de inicializacion 0 (trivial) 1 (greedy): ");
+            System.out.println("Tipo de inicializacion: 0 (trivial) 1 (greedy): ");
             iniTrivial = sc.nextInt();
         }
-
         Estaciones estaciones = new Estaciones(nest, nbic, dem, seed);
 
         BicingEstado furgonetas = new BicingEstado(estaciones);
@@ -91,6 +90,7 @@ public class BicingDemo {
             printInstrumentation(agent.getInstrumentation());
             BicingEstado finalState = (BicingEstado) search.getGoalState();
             finalState.printFurgos();
+
             System.out.println("Beneficio total: " + -1*finalState.getBeneficioTotal());
             System.out.println("Longitud total: " + finalState.getLongitudTotal());
         }   catch (Exception e) {
@@ -106,7 +106,9 @@ public class BicingDemo {
             SearchAgent agent = new SearchAgent(problem,search);
             BicingEstado finalState = (BicingEstado) search.getGoalState();
             finalState.printFurgos();
-           
+            // System.out.println();
+            // printActions(agent.getActions());
+            // printInstrumentation(agent.getInstrumentation());
             System.out.println("Beneficio total: " + -1*finalState.getBeneficioTotal());
             System.out.println("Longitud total: " + finalState.getLongitudTotal());
         } catch (Exception e) {
