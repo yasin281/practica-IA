@@ -27,7 +27,7 @@ public class BicingDemo {
         System.out.println("Semilla: 1234");
         System.out.println("Algoritmo de busqueda 0 (Hill Climbing) 1 (Simulated Annealing): 0");
         System.out.println("Tipo de heuristica 0 (sin coste) 1 (coste distancia): 0");
-        System.out.println("Tipo de inicializacion 0 (Trivial) 1 (Greedy): 0");
+        System.out.println("Tipo de inicializacion 0 (trivial) 1 (greedy): 0");
         
         System.out.println("Quieres utilizar la conifguracion por defecto? (y/n)");
         
@@ -41,7 +41,7 @@ public class BicingDemo {
         int seed = 1234;
         int iniTrivial = 1;
         int heuristica = 0;
-        int hillClimbing = 0;
+        int hillClimbing = 1;
 
         if(answer.equals("n")){
             System.out.println("Numero de estaciones ");
@@ -71,17 +71,12 @@ public class BicingDemo {
         BicingEstado furgonetas = new BicingEstado(estaciones);
         furgonetas.inicializarFurgos(nfurg);
 
-        furgonetas.setHeuristica(0);
-
-        //printear la informacion de los estaciones
-        furgonetas.ImprimeEstaciones();
-
         if(iniTrivial == 0) furgonetas.iniTrivial();
         else furgonetas.GreedyIni();
 
-        if(hillClimbing == 0) BicingHillClimbingSearch(furgonetas);
+        furgonetas.setHeuristica(heuristica);
+        if(hillClimbing == 1) BicingHillClimbingSearch(furgonetas);
         else BicingSimulatedAnnealingSearch(furgonetas);
-
 
     }
 
@@ -96,8 +91,8 @@ public class BicingDemo {
             printInstrumentation(agent.getInstrumentation());
             BicingEstado finalState = (BicingEstado) search.getGoalState();
             finalState.printFurgos();
-            System.out.println("Beneficio total: " + -1*finalState.getBeneficioTotal() + " $");
-            System.out.println("Longitud total: " + finalState.getLongitudTotal() + " Km");
+            System.out.println("Beneficio total: " + -1*finalState.getBeneficioTotal());
+            System.out.println("Longitud total: " + finalState.getLongitudTotal());
         }   catch (Exception e) {
             e.printStackTrace();
         }

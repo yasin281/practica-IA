@@ -32,30 +32,31 @@ public class BicingSucesoresSA implements SuccessorFunction {
 
     if(k == 0 && aplicableDestin1){
         new_state.cambiarDestino(i,j);
-        action= "Asigar/Cambiar Destino1 ";
+        action= "asignar destino 1 ";
       }
       else if(k == 1 && aplicableDestin2){
         new_state.cambiarDestino2(i,j);
-        action= "Asignar/Cambiar Destino2 ";
+        action= "asignar destino 2 ";
+        
       }
       else if(k == 2 && aplicableOrigen){
           new_state.CambiarOrigen(i,j);
-          String s = "Furgoneta " + i + " En Origen " + j + "->Numero de Bicis1 : " + new_state.Bicis1(i) + " Bicis2 :" + new_state.Bicis2(i);
-          action= "Cambia Origen " +s + " A " + j;
+          String s = "Furgoneta " + i + " Origen " + j + "Numero de bicis1 : " + new_state.Bicis1(i) + " bicis 2 :" + new_state.Bicis2(i);
+          action= "cambiar origen " +s;
       }
       else{
           if(aplicableDestin1){
             new_state.cambiarDestino(i,j);
-            action= "Asigar/Cambiar Destino1 ";
+            action= "asignar destino 1 ";
           }
           else if(aplicableDestin2){
             new_state.cambiarDestino2(i,j);
-            action= "Asigar/Cambiar Destino2 ";
+            action= "asignar destino 2 ";
           }
           else if(aplicableOrigen){
             new_state.CambiarOrigen(i,j);
-            String s = "Furgoneta " + i + " En Origen " + j + "->Numero de Bicis1 : " + new_state.Bicis1(i) + " Bicis2 :" + new_state.Bicis2(i);
-            action= "Cambia Origen " +s + " A " + j;
+            String s = "Furgoneta " + i + " Origen " + j + "Numero de bicis1 : " + new_state.Bicis1(i) + " bicis 2 :" + new_state.Bicis2(i);
+            action= "cambiar origen " +s;
           }
           else{
             action = "No se puede aplicar ninguna accion";
