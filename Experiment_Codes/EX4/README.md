@@ -1,19 +1,4 @@
-Problema:
-
-Representacion del Estado
-La representacion del estado consta de un vector de furgonetas, donde F[0] indica la furgoneta a tratar,este contiene 3 elementos como máximo de una posible ruta. Primer elemento, partiendo de un estacion inicial donde recogera x bicicletas, siendo 0<=x <=30 . Segundo elemento que será el primer destino y un entero que indica nb a descargar. El tercer elemento, sera opcional ya que e trata del posible tercer destino.
-
-//Estructura de Datos
-vector<vector<Pair<Estacion,nb>>> rutasFurgonetas;
-//Ejemplo
-F[0]=vec3({E0,nb a recoger},{Ed,nb-x},{Ed2,x})
-
-F[i][0]=origen
-F[i][1]=destino 1
-F[i][2]=destino 2
-F[i][3]=nb destino 1
-F[i][4]=nb destino 2
-
+Experimento 4 : Dado el escenario de los apartados anteriores, estudiad como evoluciona el tiempo de ejecución para hallar la solución en función del número de estaciones, furgonetas y bicicletas asumiendo una proporción 1 a 50 entre estaciones y bicicletas y 1 a 5 entre furgonetas y estaciones. Para ello empezad con 25 estaciones e id aumentándolas de 25 en 25 hasta que veáis la tendencia. Usad el algoritmo de HillClimbing y la misma heurística.
 
 COMPILACION (1):
 Añadir librerias
@@ -22,9 +7,9 @@ export CLASSPATH=".:./lib/Bicing.jar:./lib/AIMA.jar"
 ``````
 Compilar
 ``````
-javac BicingDemo.java
+javac BicingDemoEx4.java
 ``````
 Ejecutar
 ``````
-java BicingDemo
+java BicingDemoEx4
 ``````
