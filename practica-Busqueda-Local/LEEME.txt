@@ -1,0 +1,24 @@
+# Instrucciones para Ejecutar la Práctica Bicing
+
+#Preparación de los archivos a Ejecutar
+
+#Descomprime el archivo ZIP utilizando la terminal o un programa de descompresión:
+
+#En terminal
+unzip Bicing.zip
+
+#Ejecución en un IDE
+Abrir la carpeta Bicing en IDE y ejecutar directamente.
+
+#Ejecución en terminal
+Abrir la terminal en el directorio del Bicing, o navegar desde terminal hasta ese directorio.
+
+Añadir librerias
+export CLASSPATH=".:./lib/Bicing.jar:./lib/AIMA.jar"
+
+Compilar el código
+javac BicingDemo.java
+
+Ejecutar el programa
+
+java BicingDemo
