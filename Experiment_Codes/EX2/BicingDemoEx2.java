@@ -79,10 +79,10 @@ public class BicingDemoEx2 {
 
                 BicingEstado furgonetas = new BicingEstado(estaciones);
                 furgonetas.inicializarFurgos(nfurg);
-
+                long startTime = System.nanoTime();     
                 if(iniTrivial == 0) furgonetas.iniTrivial();
                 else furgonetas.GreedyIni();
-                long startTime = System.nanoTime();     
+                //long startTime = System.nanoTime();     
                 furgonetas.setHeuristica(heuristica);
                 if(hillClimbing == 1) BicingHillClimbingSearch(furgonetas);
                 else BicingSimulatedAnnealingSearch(furgonetas);
