@@ -113,4 +113,11 @@ public class BicingExperimento5 {
         }
         
     }
+    
+    private static void printActions(List actions) {
+        for (int i = 0; i < actions.size(); i++) {
+            String action = (String) actions.get(i);
+            System.out.println(action);
+        }
+    }
 }
