@@ -1,6 +1,6 @@
 import IA.Bicing.Estacion;
 import IA.Bicing.Estaciones;
-
+ 
 public class BicingEstado{
     //Matriz de furgonetas
     private double[][] furgos;    
